@@ -23,11 +23,15 @@ public class User {
 
     private String lastName;
 
-    private String phoneNumber;
+    private String username;
 
-    private String birthDate; // Consider using java.time.LocalDate for date handling
+    private String actualJob;
 
-    private String points; // Changed from String to Integer for proper numerical handling
+    private String actualCompany;
+
+    private String professionalDomain;
+
+    private String mentor;
 
     private String token; // Ensure token handling is secure and fits your auth needs
 
@@ -37,4 +41,7 @@ public class User {
 
     @Column(nullable = false)
     private String yearOfStudy; // Added to handle the academic year of the student
+    private String profilePicturePath;
+
+
 }

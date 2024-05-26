@@ -7,7 +7,9 @@ import com.example.YoungTalens.mapper.UserMapper;
 import com.example.YoungTalens.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -31,25 +33,32 @@ public class UserService {
         User user = userRepository.findUserByEmail(email);
         return UserMapper.toDto(user);
     }
+
     public UserDto getUserByToken(String token) {
         User user = userRepository.findByToken(token);
         return UserMapper.toDto(user);
     }
-    public void updateUser(Long id, UserDto userDto) {
-        Optional < User > existingUser = userRepository.findById(id);
-        if (existingUser.isPresent()) {
-            existingUser.get().setEmail(userDto.email());
-            existingUser.get().setPassword(userDto.password());
-            existingUser.get().setFirstName(userDto.firstName());
-            existingUser.get().setLastName(userDto.lastName());
-            existingUser.get().setBirthDate(userDto.birthDate());
-            existingUser.get().setPhoneNumber(userDto.phoneNumber());
-            existingUser.get().setPoints(userDto.points());
-            existingUser.get().setToken(userDto.token());
-            existingUser.get().setFaculty(FacultyMapper.toEntity(userDto.facultyDto()));
-            existingUser.get().setYearOfStudy(userDto.yearOfStudy());
-            userRepository.save(existingUser.get());
+
+    public void updateUser(UserDto userDto) {
+        User existingUser = userRepository.findUserByEmail(userDto.email());
+        existingUser.setEmail(userDto.email());
+        existingUser.setPassword(userDto.password());
+        existingUser.setFirstName(userDto.firstName());
+        existingUser.setLastName(userDto.lastName());
+        existingUser.setUsername(userDto.username());
+        existingUser.setActualJob(userDto.actualJob());
+        existingUser.setActualCompany(userDto.actualCompany());
+        existingUser.setProfessionalDomain(userDto.professionalDomain());
+        existingUser.setMentor(userDto.mentor());
+        existingUser.setToken(userDto.token());
+        existingUser.setYearOfStudy(userDto.yearOfStudy());
+
+            userRepository.save(existingUser);
         }
 
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserMapper::toDto).collect(Collectors.toList());
     }
+
 }

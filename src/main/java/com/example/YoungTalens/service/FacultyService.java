@@ -23,4 +23,9 @@ public class FacultyService {
         facultyRepository.save(faculty);
         return FacultyMapper.toDto(faculty);
     }
+
+    public FacultyDto getFacultyByName(String name) {
+        Faculty faculty = facultyRepository.findByName(name);
+        return FacultyMapper.toDto(faculty);
+    }
 }

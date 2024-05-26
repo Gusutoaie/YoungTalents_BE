@@ -6,5 +6,5 @@ import com.example.YoungTalens.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
-
+    Faculty findByName(String name);
 }
