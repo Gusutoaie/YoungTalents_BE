@@ -35,4 +35,11 @@ public class JobService {
                 .map(jobMapper::toDto)
                 .orElse(null);
     }
+
+    public List<JobDTO> searchJobs(String query) {
+        return jobRepository.findByTitleContainingIgnoreCase(query).stream()
+                .map(jobMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }
