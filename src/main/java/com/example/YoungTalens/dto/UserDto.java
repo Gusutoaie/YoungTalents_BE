@@ -16,6 +16,7 @@ public record UserDto(
         String token,
         FacultyDto facultyDto,
         String yearOfStudy,
-        String profilePicturePath
+        String profilePicturePath,
+        String role
 
         ) {}

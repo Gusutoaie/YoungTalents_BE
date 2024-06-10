@@ -43,5 +43,27 @@ public class User {
     private String yearOfStudy; // Added to handle the academic year of the student
     private String profilePicturePath;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false) // Explicitly define join column for role
+    private Role role;
+
+
+    // Constructor without role for easier mapping
+    public User(Long id, String email, String password, String firstName, String lastName, String username, String actualJob, String actualCompany, String professionalDomain, String mentor, String token, Faculty faculty, String yearOfStudy, String profilePicturePath) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.actualJob = actualJob;
+        this.actualCompany = actualCompany;
+        this.professionalDomain = professionalDomain;
+        this.mentor = mentor;
+        this.token = token;
+        this.faculty = faculty;
+        this.yearOfStudy = yearOfStudy;
+        this.profilePicturePath = profilePicturePath;
+    }
 
 }

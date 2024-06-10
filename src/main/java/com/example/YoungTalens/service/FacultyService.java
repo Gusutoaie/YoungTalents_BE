@@ -4,28 +4,40 @@ import com.example.YoungTalens.dto.FacultyDto;
 import com.example.YoungTalens.entity.Faculty;
 import com.example.YoungTalens.mapper.FacultyMapper;
 import com.example.YoungTalens.repository.FacultyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
 
-    private final FacultyRepository facultyRepository;
+    @Autowired
+    private FacultyRepository facultyRepository;
 
-    public FacultyService(FacultyRepository facultyRepository) {
-        this.facultyRepository = facultyRepository;
+    public List<FacultyDto> findAll() {
+        return facultyRepository.findAll().stream()
+                .map(FacultyMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public void deleteFaculty(Long id) {
-        facultyRepository.deleteById(id);
-    }
-    public FacultyDto createFaculty(FacultyDto facultyDto) {
+    public FacultyDto save(FacultyDto facultyDto) {
         Faculty faculty = FacultyMapper.toEntity(facultyDto);
-        facultyRepository.save(faculty);
-        return FacultyMapper.toDto(faculty);
+        Faculty savedFaculty = facultyRepository.save(faculty);
+        return FacultyMapper.toDto(savedFaculty);
     }
 
     public FacultyDto getFacultyByName(String name) {
-        Faculty faculty = facultyRepository.findByName(name);
-        return FacultyMapper.toDto(faculty);
+        Optional<Faculty> faculty = facultyRepository.findByName(name);
+        return faculty.map(FacultyMapper::toDto).orElse(null);
+    }
+
+    public void saveAll(List<Faculty> faculties) {
+        facultyRepository.saveAll(faculties);
+    }
+    public boolean existsByName(String name) {
+        return facultyRepository.existsByName(name);
     }
 }

@@ -25,7 +25,9 @@ public class UserMapper {
                 user.getToken(),
                 FacultyMapper.toDto(user.getFaculty()),
                 user.getYearOfStudy(),
-                user.getProfilePicturePath()
+                user.getProfilePicturePath(),
+                user.getRole() != null ? user.getRole().getName() : null // Map role name
+
         );
     }
 
