@@ -4,6 +4,9 @@ import com.example.YoungTalens.dto.ArticleDTO;
 import com.example.YoungTalens.mapper.ArticleMapper;
 import com.example.YoungTalens.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +50,12 @@ public class ArticleController {
     @GetMapping
     public List<ArticleDTO> getAllArticles() {
         return articleService.getAllArticles();
+    }
+
+    @GetMapping("/paged")
+    public Page<ArticleDTO> getAllArticlesPaged(@RequestParam int page, @RequestParam int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return articleService.getAllArticles(pageable);
     }
 
     @GetMapping("/{id}")

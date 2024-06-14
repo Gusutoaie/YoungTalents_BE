@@ -5,6 +5,9 @@ import com.example.YoungTalens.entity.Articles;
 import com.example.YoungTalens.mapper.ArticleMapper;
 import com.example.YoungTalens.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +33,13 @@ public class ArticleService {
 
     public ArticleDTO getArticleById(Long id) {
         return articleRepository.findById(id).map(articleMapper::toDto).orElse(null);
+    }
+
+    public List<ArticleDTO> getAllArticlesWithoutPagination() {
+        return articleRepository.findAll().stream().map(articleMapper::toDto).collect(Collectors.toList());
+    }
+
+    public Page<ArticleDTO> getAllArticles(Pageable pageable) {
+        return articleRepository.findAll(pageable).map(articleMapper::toDto);
     }
 }
