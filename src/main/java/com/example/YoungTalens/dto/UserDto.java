@@ -17,6 +17,7 @@ public record UserDto(
         FacultyDto facultyDto,
         String yearOfStudy,
         String profilePicturePath,
-        String role
+        RoleDto role
 
-        ) {}
+
+) {}

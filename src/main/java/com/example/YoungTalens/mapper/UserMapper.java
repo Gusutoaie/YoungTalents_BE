@@ -1,11 +1,14 @@
 package com.example.YoungTalens.mapper;
 
+import com.example.YoungTalens.dto.RoleDto;
 import com.example.YoungTalens.dto.UserDto;
+import com.example.YoungTalens.entity.Role;
 import com.example.YoungTalens.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+
     public static UserDto toDto(User user) {
         if (user == null) {
             return null;
@@ -26,8 +29,7 @@ public class UserMapper {
                 FacultyMapper.toDto(user.getFaculty()),
                 user.getYearOfStudy(),
                 user.getProfilePicturePath(),
-                user.getRole() != null ? user.getRole().getName() : null // Map role name
-
+                toRoleDto(user.getRole())
         );
     }
 
@@ -36,7 +38,7 @@ public class UserMapper {
             return null;
         }
 
-        return new User(
+        User user = new User(
                 userDto.id(),
                 userDto.email(),
                 userDto.password(),
@@ -52,5 +54,27 @@ public class UserMapper {
                 userDto.yearOfStudy(),
                 userDto.profilePicturePath()
         );
+
+        user.setRole(toRoleEntity(userDto.role()));
+        return user;
+    }
+
+    public static RoleDto toRoleDto(Role role) {
+        if (role == null) {
+            return null;
+        }
+
+        return new RoleDto(role.getId(), role.getName());
+    }
+
+    public static Role toRoleEntity(RoleDto roleDto) {
+        if (roleDto == null) {
+            return null;
+        }
+
+        Role role = new Role();
+        role.setId(roleDto.id());
+        role.setName(roleDto.name());
+        return role;
     }
 }

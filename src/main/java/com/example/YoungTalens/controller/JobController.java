@@ -3,7 +3,6 @@ package com.example.YoungTalens.controller;
 import com.example.YoungTalens.dto.JobDTO;
 import com.example.YoungTalens.service.JobService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

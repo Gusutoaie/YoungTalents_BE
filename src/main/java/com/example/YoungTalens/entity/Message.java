@@ -5,22 +5,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Faculty {
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private String content;
 
-    @ManyToOne
-    private User dean;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
 
     @ManyToOne
-    private User proDean;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_room_id", nullable = false)
+    private ChatRoom chatRoom;
 }

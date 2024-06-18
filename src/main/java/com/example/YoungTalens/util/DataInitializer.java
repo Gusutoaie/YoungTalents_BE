@@ -19,17 +19,17 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Faculty[] facultiesArray = {
-                new Faculty(null, "Facultatea de Arte și Design", null, null),
-                new Faculty(null, "Facultatea de Chimie, Biologie, Geografie", null, null),
-                new Faculty(null, "Facultatea de Drept", null, null),
-                new Faculty(null, "Facultatea de Economie și de Administrare a Afacerilor", null, null),
-                new Faculty(null, "Facultatea de Educație Fizică și Sport", null, null),
-                new Faculty(null, "Facultatea de Fizică", null, null),
-                new Faculty(null, "Facultatea de Litere, Istorie și Teologie", null, null),
-                new Faculty(null, "Facultatea de Matematică și Informatică", null, null),
-                new Faculty(null, "Facultatea de Muzică și Teatru", null, null),
-                new Faculty(null, "Facultatea de Sociologie și Psihologie", null, null),
-                new Faculty(null, "Facultatea de Științe Politice, Filosofie și Științe ale Comunicării", null, null)
+                new Faculty(null, "Facultatea de Arte și Design", null, null,null),
+                new Faculty(null, "Facultatea de Chimie, Biologie, Geografie", null, null,null),
+                new Faculty(null, "Facultatea de Drept", null, null,null),
+                new Faculty(null, "Facultatea de Economie și de Administrare a Afacerilor", null, null,null),
+                new Faculty(null, "Facultatea de Educație Fizică și Sport", null, null,null),
+                new Faculty(null, "Facultatea de Fizică", null, null,null),
+                new Faculty(null, "Facultatea de Litere, Istorie și Teologie", null, null,null),
+                new Faculty(null, "Facultatea de Matematică și Informatică", null, null,null),
+                new Faculty(null, "Facultatea de Muzică și Teatru", null, null,null),
+                new Faculty(null, "Facultatea de Sociologie și Psihologie", null, null,null),
+                new Faculty(null, "Facultatea de Științe Politice, Filosofie și Științe ale Comunicării", null, null,null)
         };
 
         List<Faculty> faculties = Arrays.asList(facultiesArray);
