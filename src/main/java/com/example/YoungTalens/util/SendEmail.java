@@ -1,7 +1,6 @@
 package com.example.YoungTalens.util;
 
 import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -39,7 +38,7 @@ public class SendEmail {
 
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmailAddress));
 
-            message.setSubject("SportsSync - Confirm your email address");
+            message.setSubject("UVT Terra - Confirm your email address");
 
             message.setText("Hello,\n\n" +
                     "Please confirm your email address by clicking the link below:\n\n" +
@@ -53,6 +52,33 @@ public class SendEmail {
         } catch (MessagingException e) {
             e.printStackTrace();
 
+            return false;
+        }
+    }
+
+    public static boolean sendNewAccountEmail(String recipientEmailAddress, String password) {
+        try {
+            Message message = new MimeMessage(getSession());
+
+            message.setFrom(new InternetAddress(senderEmailAddress));
+
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmailAddress));
+
+            message.setSubject("Your New Account");
+
+            message.setText("Hello,\n\n" +
+                    "Your account has been created. Here are your credentials:\n\n" +
+                    "Email: " + recipientEmailAddress + "\n" +
+                    "Password: " + password + "\n\n" +
+                    "Please change your password after logging in.\n\n" +
+                    "Thank you,\n" +
+                    "Your Team");
+
+            Transport.send(message);
+
+            return true;
+        } catch (MessagingException e) {
+            e.printStackTrace();
             return false;
         }
     }

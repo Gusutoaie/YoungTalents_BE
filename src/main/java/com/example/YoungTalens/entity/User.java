@@ -39,7 +39,6 @@ public class User {
     @JoinColumn(name = "faculty_id") // Explicitly define join column
     private Faculty faculty;
 
-    @Column(nullable = false)
     private String yearOfStudy; // Added to handle the academic year of the student
     private String profilePicturePath;
 

@@ -7,6 +7,8 @@ import com.example.YoungTalens.entity.User;
 import com.example.YoungTalens.mapper.UserMapper;
 import com.example.YoungTalens.repository.RoleRepository;
 import com.example.YoungTalens.repository.UserRepository;
+import com.example.YoungTalens.util.SendEmail;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,4 +112,61 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(null);
     }
+
+    public List<UserDto> createUsersFromEmails(List<String> emails) {
+        return emails.stream().map(email -> {
+            String password = generateRandomPassword();
+            UserDto userDto = new UserDto(
+                    null,
+                    email,
+                    password,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            Role defaultRole = roleRepository.findByName("Simple User");
+            if (defaultRole == null) {
+                throw new RuntimeException("Default role not found");
+            }
+
+            userDto = new UserDto(
+                    userDto.id(),
+                    userDto.email(),
+                    userDto.password(),
+                    userDto.firstName(),
+                    userDto.lastName(),
+                    userDto.username(),
+                    userDto.actualJob(),
+                    userDto.actualCompany(),
+                    userDto.professionalDomain(),
+                    userDto.mentor(),
+                    userDto.token(),
+                    userDto.facultyDto(),
+                    userDto.yearOfStudy(),
+                    userDto.profilePicturePath(),
+                    new RoleDto(defaultRole.getId(), defaultRole.getName())
+            );
+
+            User savedUser = userRepository.save(UserMapper.toEntity(userDto));
+            SendEmail.sendNewAccountEmail(email, password);
+            return UserMapper.toDto(savedUser);
+        }).collect(Collectors.toList());
+    }
+
+    private String generateRandomPassword() {
+        return RandomStringUtils.randomAlphanumeric(10);
+    }
+
+
+
 }
