@@ -22,4 +22,9 @@ public class AdminController {
     public List<UserDto> createAccounts(@RequestBody List<String> emails) {
         return userService.createUsersFromEmails(emails);
     }
+
+    @GetMapping("/users")
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
 }
