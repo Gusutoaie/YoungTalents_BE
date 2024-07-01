@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<String> registerUser(@RequestBody Map<String, String> body) {
         String token = RandomStringUtils.random(16, true, true);
 
-        FacultyDto facultyDto = new FacultyDto(null, body.get("faculty"), null,null, null);
+        FacultyDto facultyDto = new FacultyDto(null, body.get("faculty"), null, null, null);
         facultyDto = facultyService.save(facultyDto);
 
         UserDto userDTO = new UserDto(
@@ -61,7 +61,7 @@ public class UserController {
         UserDto userDto = userService.getUserByUsernameAndPassword(body.get("emailAddress"), body.get("password"));
 
         if (userDto == null) {
-            return ResponseEntity.badRequest().body("* Incorrect password");
+            return ResponseEntity.badRequest().body("* Incorrect email or password");
         }
 
         return ResponseEntity.ok().body(userDto.email());
@@ -77,7 +77,7 @@ public class UserController {
     public ResponseEntity<String> updateUser(@RequestBody UserDto userDto) {
         FacultyDto faculty = facultyService.getFacultyByName(userDto.facultyDto().name());
         if (faculty == null) {
-            faculty = new FacultyDto(null, userDto.facultyDto().name(), null,null, null);
+            faculty = new FacultyDto(null, userDto.facultyDto().name(), null, null, null);
             faculty = facultyService.save(faculty);
         }
         userDto = new UserDto(
