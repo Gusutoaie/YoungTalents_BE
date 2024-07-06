@@ -1,6 +1,4 @@
 package com.example.YoungTalens.dto;
 
-import com.example.YoungTalens.entity.User;
-
-public record FacultyDto(Long id, String name, String description, User dean, User proDean) {}
+public record FacultyDto(Long id, String name, String description, com.example.YoungTalens.entity.User dean, com.example.YoungTalens.entity.User proDean) {}
 

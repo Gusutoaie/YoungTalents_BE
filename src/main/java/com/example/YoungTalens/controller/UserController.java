@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -106,4 +107,25 @@ public class UserController {
         List<UserDto> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
+
+    @PostMapping("/upload-profile-picture")
+    public ResponseEntity<UserDto> uploadProfilePicture(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
+        try {
+            UserDto updatedUser = userService.updateProfilePicture(userId, file);
+            return ResponseEntity.ok().body(updatedUser); // Return the updated user details
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null); // Return null in case of failure
+        }
+    }
+
+//    @PostMapping("/upload-header-image")
+//    public ResponseEntity<String> uploadHeaderImage(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
+//        try {
+//            userService.updateHeaderImage(userId, file);
+//            return ResponseEntity.ok().body("Header image updated successfully");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Failed to update header image");
+//        }
+//    }
 }

@@ -11,8 +11,13 @@ import com.example.YoungTalens.util.SendEmail;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -217,5 +222,46 @@ public class UserService {
     private String generateRandomPassword() {
         return RandomStringUtils.randomAlphanumeric(10);
     }
+
+    private final Path rootLocation = Paths.get("uploads");
+
+    public void init() {
+        try {
+            Files.createDirectories(rootLocation);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize storage!", e);
+        }
+    }
+
+    public String saveFile(MultipartFile file) {
+        try {
+            String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(filename));
+            return filename;
+        } catch (Exception e) {
+            throw new RuntimeException("FAIL!", e);
+        }
+    }
+
+    public UserDto updateProfilePicture(Long userId, MultipartFile file) {
+        System.out.println("Updating profile picture");
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        String filename = saveFile(file);
+        user.setProfilePicturePath("/uploads/" + filename);
+        System.out.println(user);
+        userRepository.save(user);
+        return UserMapper.toDto(user); // Return the updated user
+    }
+
+//    public UserDto updateHeaderImage(Long userId, MultipartFile file) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+//        String filename = saveFile(file);
+//        user.setHeaderImagePath("/uploads/" + filename);
+//        userRepository.save(user);
+//        return UserMapper.toDto(user); // Return the updated user
+//    }
+
+
+
 
 }
