@@ -27,7 +27,6 @@ public class UserController {
         String token = RandomStringUtils.random(16, true, true);
 
         FacultyDto facultyDto = new FacultyDto(null, body.get("faculty"), null, null, null);
-        facultyDto = facultyService.save(facultyDto);
 
         UserDto userDTO = new UserDto(
                 null,
