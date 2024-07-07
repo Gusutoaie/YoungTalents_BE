@@ -2,17 +2,21 @@ package com.example.YoungTalens.controller;
 
 import com.example.YoungTalens.dto.FacultyDto;
 import com.example.YoungTalens.dto.UserDto;
+import com.example.YoungTalens.entity.Faculty;
+import com.example.YoungTalens.repository.FacultyRepository;
 import com.example.YoungTalens.service.FacultyService;
 import com.example.YoungTalens.service.UserService;
 import com.example.YoungTalens.util.SendEmail;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,12 +25,25 @@ public class UserController {
     private final UserService userService;
     private final FacultyService facultyService;
     private static final String DEFAULT_ROLE = "Simple User"; // Default role
+    @Autowired
+    private FacultyRepository facultyRepository;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Map<String, String> body) {
         String token = RandomStringUtils.random(16, true, true);
 
-        FacultyDto facultyDto = new FacultyDto(null, body.get("faculty"), null, null, null);
+        // Fetch or create Faculty
+        Optional<Faculty> facultyOptional = facultyRepository.findByName(body.get("faculty"));
+        Faculty faculty;
+        if (facultyOptional.isPresent()) {
+            faculty = facultyOptional.get();
+        } else {
+            faculty = new Faculty();
+            faculty.setName(body.get("faculty"));
+            faculty = facultyRepository.save(faculty);
+        }
+
+        FacultyDto facultyDto = new FacultyDto(faculty.getId(), faculty.getName(), null, null, null);
 
         UserDto userDTO = new UserDto(
                 null,
@@ -51,7 +68,6 @@ public class UserController {
 
         return ResponseEntity.ok().body("User created successfully");
     }
-
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody Map<String, String> body) {
         if (userService.getUserByEmailAddress(body.get("emailAddress")) == null) {
