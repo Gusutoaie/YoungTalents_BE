@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,6 +48,8 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false) // Explicitly define join column for role
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ForumMessage> forumMessages;
 
     // Constructor without role for easier mapping
     public User(Long id, String email, String password, String firstName, String lastName, String username, String actualJob, String actualCompany, String professionalDomain, String mentor, String token, Faculty faculty, String yearOfStudy, String profilePicturePath) {
